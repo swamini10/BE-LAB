@@ -10,7 +10,7 @@ import time   # Used to measure execution time
 def fib_recursive(n, steps):
     # Count each function call as one step
     steps[0] += 1
-    print(f"Recursive Step {steps[0]}: fib_recursive({n}) ")  #  show each recursive call
+    #print(f"Recursive Step {steps[0]}: fib_recursive({n}) ")  #  show each recursive call
 
     # Base case: if n is 0 or 1, return n
     if n <= 1:
@@ -42,7 +42,7 @@ def fib_non_recursive(n, steps):
         for i in range(2, n):
             steps[0] += 1         # Count each loop iteration as one step
             n3 = n1 + n2          # Calculate next Fibonacci number
-            print(f"\nNon-Recursive Step {steps[0]}: {n1} + {n2} = {n3}")  #  show each calculation step
+            #print(f"\nNon-Recursive Step {steps[0]}: {n1} + {n2} = {n3}")  #  show each calculation step
 
             print(n3, end=" ")    # Print it
             n1, n2 = n2, n3       # Update variables for next iteration

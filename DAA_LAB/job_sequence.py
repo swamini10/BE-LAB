@@ -51,3 +51,12 @@ if __name__ == "__main__":
     print("\n--- Job Sequencing Result ---")
     print("Job Sequence:", sequence)
     print("Total Profit:", profit)
+
+
+
+# Enter number of jobs: 4
+# j1  2 8
+# j2  3 7
+# j3  2 9
+# j4  1 2
+
