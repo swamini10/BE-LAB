@@ -4,3 +4,56 @@
 > nvcc addition.cuo addition addition.cu 
 > ./addition 
 */
+#include <stdio.h> 
+global void vectorAdd(float *a, float *b, float *c, int n) { 
+int i = blockIdx.x * blockDim.x + threadIdx.x; 
+if (i < n) { 
+c[i] = a[i] + b[i]; 
+} 
+} 
+int main() { 
+int n = 1000000; 
+size_t bytes = n * sizeof(float); 
+float *h_a = (float *)malloc(bytes); 
+float *h_b = (float *)malloc(bytes); 
+float *h_c = (float *)malloc(bytes); 
+for (int i = 0; i < n; i++) { 
+h_a[i] = i; 
+h_b[i] = i + 1; 
+} 
+float *d_a, *d_b, *d_c; 
+cudaMalloc(&d_a, bytes); 
+cudaMalloc(&d_b, bytes); 
+cudaMalloc(&d_c, bytes); 
+cudaMemcpy(d_a, h_a, bytes, cudaMemcpyHostToDevice); 
+cudaMemcpy(d_b, h_b, bytes, cudaMemcpyHostToDevice); 
+int threadsPerBlock = 256; 
+int blocksPerGrid = (n + threadsPerBlock - 1) / threadsPerBlock; 
+vectorAdd<<<blocksPerGrid, threadsPerBlock>>>(d_a, d_b, d_c, n); 
+cudaMemcpy(h_c, d_c, bytes, cudaMemcpyDeviceToHost); 
+printf("First 10 elements of vector a:\n"); 
+for (int i = 0; i < 10; i++) { 
+printf("%.2f ", h_a[i]); 
+} 
+printf("\n"); 
+printf("Size of vector a: %d\n", n); 
+printf("First 10 elements of vector b:\n"); 
+for (int i = 0; i < 10; i++) { 
+printf("%.2f ", h_b[i]); 
+} 
+printf("\n"); 
+printf("Size of vector b: %d\n", n); 
+printf("First 10 elements of resultant vector:\n"); 
+for (int i = 0; i < 10; i++) { 
+printf("%.2f ", h_c[i]); 
+} 
+printf("\n"); 
+printf("Size of resultant vector: %d\n", n); 
+free(h_a); 
+free(h_b); 
+free(h_c); 
+cudaFree(d_a); 
+cudaFree(d_b); 
+cudaFree(d_c); 
+return 0; 
+}
