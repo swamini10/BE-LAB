@@ -1,6 +1,10 @@
 /*Write a program to implement Parallel Merge sort using OpenMP. Use 
 existing algorithms and measure the performance of sequential and parallel 
 algorithms. 
+
+commands 
+g++ -fopenmp Mergesort.cpp -o Mergesort 
+ ./Mergesort
 */
 #include <iostream>
 #include <vector>
