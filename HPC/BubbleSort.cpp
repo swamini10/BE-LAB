@@ -75,6 +75,8 @@ int main() {
     return 0;
 }
 /*
+
+Time Complexity Case: O(n²)
 To implement Sequential and Parallel Bubble Sort using OpenMP and compare their results.
 
 🌐 Concept Used
