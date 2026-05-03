@@ -1,0 +1,106 @@
+/*Write a program to implement Parallel Merge sort using OpenMP. Use 
+existing algorithms and measure the performance of sequential and parallel 
+algorithms. 
+*/
+#include <omp.h>
+#include <iostream>
+using namespace std;
+
+// Merge function
+void merge(int nums[], int leftStart, int leftEnd, int rightStart, int rightEnd)
+{
+    int n = (rightEnd - leftStart) + 1;
+    int tempArray[n];
+
+    int t = 0;
+    int l = leftStart;
+    int r = rightStart;
+
+    while (l <= leftEnd && r <= rightEnd)
+    {
+        if (nums[l] <= nums[r])
+            tempArray[t++] = nums[l++];
+        else
+            tempArray[t++] = nums[r++];
+    }
+
+    while (l <= leftEnd)
+        tempArray[t++] = nums[l++];
+
+    while (r <= rightEnd)
+        tempArray[t++] = nums[r++];
+
+    for (int i = 0; i < n; i++)
+        nums[leftStart + i] = tempArray[i];
+}
+
+// Parallel Merge Sort
+void mergeSort(int nums[], int start, int end)
+{
+    if (start < end)
+    {
+        int mid = (start + end) / 2;
+
+        #pragma omp parallel sections num_threads(2)
+        {
+            #pragma omp section
+            mergeSort(nums, start, mid);
+
+            #pragma omp section
+            mergeSort(nums, mid + 1, end);
+        }
+
+        merge(nums, start, mid, mid + 1, end);
+    }
+}
+
+int main()
+{
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    int nums[n];  // array of size n
+
+    cout << "Enter elements:\n";
+    for (int i = 0; i < n; i++)
+        cin >> nums[i];
+
+    mergeSort(nums, 0, n - 1);
+
+    cout << "Sorted Array:\n";
+    for (int i = 0; i < n; i++)
+        cout << nums[i] << " ";
+
+    return 0;
+}
+/*
+Algorithm: Parallel Merge Sort
+Start
+Input the number of elements n
+Read n elements into array A
+Call mergeSort(A, 0, n-1)
+Function: mergeSort(A, start, end)
+If start < end, then:
+Find middle index:
+mid = (start + end) / 2
+Divide the array into two halves
+Parallel Execution using OpenMP sections:
+Sort left half → mergeSort(A, start, mid)
+Sort right half → mergeSort(A, mid+1, end)
+Merge the two sorted halves using merge() function
+Function: merge(A, leftStart, leftEnd, rightStart, rightEnd)
+Create a temporary array
+Compare elements from both halves:
+Copy smaller element into temporary array
+Copy remaining elements (if any)
+Copy sorted data back into original array
+Repeat until entire array is sorted
+Display the sorted array
+Stop
+🧠 Key Points (for viva)
+Uses Divide and Conquer technique
+Parallelism achieved using OpenMP sections
+Time Complexity: O(n log n)
+Faster than Bubble Sort for large inputs
+*/
