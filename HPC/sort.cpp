@@ -145,3 +145,81 @@ g++ filename.cpp -fopenmp -o filename
  
 
 filename.exe
+
+
+/*
+
+Time Complexity Case: O(n²)
+To implement Sequential and Parallel Bubble Sort using OpenMP and compare their results.
+
+🌐 Concept Used
+Bubble Sort compares adjacent elements and swaps them if needed.
+Sequential version works one by one.
+Parallel version uses Odd-Even Transposition Sort to perform comparisons simultaneously using OpenMP.
+🧱 Program Explanation
+🔸 Swap Function
+Swaps two elements using a temporary variable.
+🔸 Sequential Bubble Sort
+Uses two nested loops.
+Compares adjacent elements and swaps if required.
+After each pass, the largest element moves to the end.
+Time Complexity: O(n²)
+🔸 Parallel Bubble Sort
+Uses Odd-Even method:
+Even phase → (0,1), (2,3), …
+Odd phase → (1,2), (3,4), …
+Uses:
+#pragma omp parallel for
+Allows multiple comparisons at the same time.
+🔸 Main Function
+Takes number of elements n
+Reads array elements
+Copies array into another vector
+Calls:
+Sequential sort
+Parallel sort
+Prints both sorted arrays
+📤 Output
+Displays sorted array using:
+Sequential method
+Parallel method
+⚠️ Important Points
+Both methods give the same result
+Parallel version is faster on multi-core systems
+Complexity remains O(n²)
+No data conflict due to independent comparisons
+🎯 Conclusion
+
+The program demonstrates how OpenMP improves performance by executing multiple operations in parallel, making sorting faster for large datasets.
+*/
+
+/*
+Algorithm: Parallel Merge Sort
+Start
+Input the number of elements n
+Read n elements into array A
+Call mergeSort(A, 0, n-1)
+Function: mergeSort(A, start, end)
+If start < end, then:
+Find middle index:
+mid = (start + end) / 2
+Divide the array into two halves
+Parallel Execution using OpenMP sections:
+Sort left half → mergeSort(A, start, mid)
+Sort right half → mergeSort(A, mid+1, end)
+Merge the two sorted halves using merge() function
+Function: merge(A, leftStart, leftEnd, rightStart, rightEnd)
+Create a temporary array
+Compare elements from both halves:
+Copy smaller element into temporary array
+Copy remaining elements (if any)
+Copy sorted data back into original array
+Repeat until entire array is sorted
+Display the sorted array
+Stop
+🧠 Key Points (for viva)
+Uses Divide and Conquer technique
+Parallelism achieved using OpenMP sections
+Time Complexity: O(n log n)
+Faster than Bubble Sort for large inputs
+*/
